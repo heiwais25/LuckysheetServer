@@ -26,29 +26,29 @@ import java.util.stream.Collectors;
 @Service
 public class JfGridFileGetService {
 
-//    @Resource(name = "postgresRecordDataInsertHandle")
-//    private IRecordDataInsertHandle recordDataInsertHandle;
-//
-//    @Resource(name = "postgresRecordDataUpdataHandle")
-//    private IRecordDataUpdataHandle recordDataUpdataHandle;
-//
-//    @Resource(name = "postgresRecordDelHandle")
-//    private IRecordDelHandle recordDelHandle;
-//
-//    @Resource(name = "postgresRecordSelectHandle")
-//    private IRecordSelectHandle recordSelectHandle;
-
-    @Resource(name = "mysqlRecordDataInsertHandle")
+    @Resource(name = "postgresRecordDataInsertHandle")
     private IRecordDataInsertHandle recordDataInsertHandle;
 
-    @Resource(name = "mysqlRecordDataUpdataHandle")
+    @Resource(name = "postgresRecordDataUpdataHandle")
     private IRecordDataUpdataHandle recordDataUpdataHandle;
 
-    @Resource(name = "mysqlRecordDelHandle")
+    @Resource(name = "postgresRecordDelHandle")
     private IRecordDelHandle recordDelHandle;
 
-    @Resource(name = "mysqlRecordSelectHandle")
+    @Resource(name = "postgresRecordSelectHandle")
     private IRecordSelectHandle recordSelectHandle;
+
+//    @Resource(name = "mysqlRecordDataInsertHandle")
+//    private IRecordDataInsertHandle recordDataInsertHandle;
+//
+//    @Resource(name = "mysqlRecordDataUpdataHandle")
+//    private IRecordDataUpdataHandle recordDataUpdataHandle;
+//
+//    @Resource(name = "mysqlRecordDelHandle")
+//    private IRecordDelHandle recordDelHandle;
+//
+//    @Resource(name = "mysqlRecordSelectHandle")
+//    private IRecordSelectHandle recordSelectHandle;
 
     @Autowired
     private GridFileRedisCacheService redisService;

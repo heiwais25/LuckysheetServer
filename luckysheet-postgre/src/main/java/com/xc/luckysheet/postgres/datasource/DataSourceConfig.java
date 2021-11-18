@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 /**
  * 数据源配置
+ *
  * @author Administrator
  */
 @Configuration
@@ -20,9 +21,9 @@ public class DataSourceConfig {
 
     @Bean(name = "postgresDataSource")
     @ConfigurationProperties(prefix = "db.postgre.druid")
-    public DataSource postgreDataSource(){
+    public DataSource postgreDataSource() {
         DataSource postgre = DataSourceBuilder.create().type(DruidDataSource.class).build();
-        log.debug("数据源postgre",postgre);
+        log.debug("Config postgre", postgre);
         return postgre;
     }
 

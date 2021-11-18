@@ -1,11 +1,11 @@
-# 配置server参数
 server:
   port: 9004
   servlet:
     context-path: /luckysheet
+
 spring:
   profiles:
-    active: @profiles.active@
+    active: '@spring.profiles.active@'
   application:
     name: web
   jackson:
