@@ -26,7 +26,7 @@ import java.util.*;
 
 /**
  * Socket处理器(包括发送信息，接收信息，信息错误等方法。)
- *
+ * <p>
  * 代码中rv，rv_end说明
  * 因为websocket传输大小限制
  * 批量更新范围单元格的时候
@@ -34,6 +34,7 @@ import java.util.*;
  * 要求 每次传'rv'  最后一次传他'rv_end'
  * rv_end就是个信号
  * 表示这次范围更新数据全部传输完,它自身这次不带数据过去的
+ *
  * @author Administrator
  */
 @Slf4j
@@ -79,6 +80,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
     /**
      * 接受消息
+     *
      * @param session
      * @param message
      * @throws Exception
@@ -97,7 +99,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         WSUserModel wsUserModel = new WSUserModel(session);
         String content = message.getPayload().toString();
         if ("rub".equals(content)) {
-            log.info("保持连接状态信息");
+            log.info("Keep Connection");
         } else {
             log.info("消息解压前：" + MyStringUtil.getStringShow(content));
             String contentReal = Pako_GzipUtils.unCompressToURI(content);
@@ -105,6 +107,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             //content=contentReal;
             JSONObject bson = null;
             try {
+                log.info(contentReal);
                 bson = JSONObject.parseObject(contentReal);
             } catch (Exception ex) {
                 log.error("json字符串转换错误str:" + JSONObject.toJSONString(contentReal));
@@ -140,7 +143,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                             if (_str.length() == 0) {
 
                             } else {
-                                log.info("handleUpdate--error:{}" ,_str);
+                                log.info("handleUpdate--error:{}", _str);
                                 _b = false;
                             }
                         } else {
@@ -148,7 +151,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                             _b = false;
                         }
                     } catch (Exception e) {
-                        log.error("handleUpdate--:redisLock--error:{}",e);
+                        log.error("handleUpdate--:redisLock--error:{}", e);
                         _b = false;
                     } finally {
                         redisLock.unlock();
@@ -197,7 +200,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        log.error("handleTransportError:{};exception:{}" ,session,exception);
+        log.error("handleTransportError:{};exception:{}", session, exception);
         if (session.isOpen()) {
             session.close();
         }
@@ -264,22 +267,22 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         WSUserModel.webSocketMapRemove(USER_SOCKET_SESSION_MAP, wsUserModel);
 
         if (isError) {
-            log.info("窗口关闭(Error):{},当前在线人数为{}" ,wsUserModel.getId() ,getOnlineCount());
+            log.info("窗口关闭(Error):{},当前在线人数为{}", wsUserModel.getId(), getOnlineCount());
         } else {
             subOnlineCount();              //在线数减1
-            log.info("窗口关闭:{},当前在线人数为:{}",wsUserModel.getId(),getOnlineCount());
-            try{
+            log.info("窗口关闭:{},当前在线人数为:{}", wsUserModel.getId(), getOnlineCount());
+            try {
                 Map map = new HashMap<>(2);
                 map.put("message", "用户退出");
                 map.put("type", 999);
                 map.put("username", wsUserModel.getUserName());
                 map.put("id", "" + wsUserModel.getWs().getId());
-                String param =new ObjectMapper().writeValueAsString(map);
+                String param = new ObjectMapper().writeValueAsString(map);
                 //消息发送到redis
                 redisMessagePublish.publishMessage(new RedisMessageModel(ipAndPort, wsUserModel.getGridKey(), param));
                 sendMessageToUserByCurrent(wsUserModel, param);
-            }catch (Exception ex){
-                log.error("用户下线群发失败:{}",ex);
+            } catch (Exception ex) {
+                log.error("用户下线群发失败:{}", ex);
             }
         }
 

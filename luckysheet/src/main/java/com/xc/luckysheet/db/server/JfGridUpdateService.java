@@ -76,6 +76,7 @@ public class JfGridUpdateService {
     public String insert(GridRecordDataModel dbObject) {
         return recordDataInsertHandle.insert(dbObject);
     }
+
     public String insert(List<GridRecordDataModel> dbObject) {
         return recordDataInsertHandle.InsertIntoBatch(dbObject);
     }
@@ -115,7 +116,7 @@ public class JfGridUpdateService {
             }
         } else if (bson instanceof JSONObject) {
             log.info("bson instanceof BasicDBObject--bson");
-            _sb.append(chooseOperation(gridKey, (JSONObject)bson));
+            _sb.append(chooseOperation(gridKey, (JSONObject) bson));
         }
         return _sb.toString();
     }
@@ -474,7 +475,7 @@ public class JfGridUpdateService {
     private String Operation_sha(String gridKey, JSONObject bson) {
         try {
             //Integer i=Integer.parseInt(bson.get("i").toString());// 当前sheet的index值,此处为null
-            JSONObject v =  bson.getJSONObject("v");   //创建的对象
+            JSONObject v = bson.getJSONObject("v");   //创建的对象
             log.info("Operation_sha--v:" + v);
             String index = null;// v中Index索引
             if (v.containsKey("index")) {
@@ -577,7 +578,7 @@ public class JfGridUpdateService {
             JSONArray _celldatas = JfGridFileUtil.getSheetByIndex(_dbObject);
             if (_celldatas != null) {
                 for (int x = _celldatas.size() - 1; x >= 0; x--) {
-                    JSONObject _cell=_celldatas.getJSONObject(x);
+                    JSONObject _cell = _celldatas.getJSONObject(x);
                     Integer _r = Integer.parseInt(_cell.get("r").toString());
                     Integer _c = Integer.parseInt(_cell.get("c").toString());
                     //判断是否添加
@@ -672,8 +673,8 @@ public class JfGridUpdateService {
                 }
                 _dbObject.put("json_data", json_data);
                 //数据分组，删除原有数据，重新保存
-                String rowCol=recordSelectHandle.getFirstBlockRowColByGridKey(gridKey,i);
-                List<JSONObject> blocks = JfGridConfigModel.toDataSplit(rowCol,_dbObject);
+                String rowCol = recordSelectHandle.getFirstBlockRowColByGridKey(gridKey, i);
+                List<JSONObject> blocks = JfGridConfigModel.toDataSplit(rowCol, _dbObject);
                 boolean _result = recordDataUpdataHandle.updateMulti2(blocks, mongodbKeys);
                 //boolean _result=false;
                 if (!_result) {
@@ -717,7 +718,7 @@ public class JfGridUpdateService {
                     len = Integer.parseInt(_v.get("len").toString());
                 }
                 if (_v.containsKey("mc")) {
-                    mc =  _v.getJSONObject("mc");
+                    mc = _v.getJSONObject("mc");
                 }
                 if (_v.containsKey("borderInfo")) {
                     borderInfo = _v.getJSONArray("borderInfo");
@@ -805,8 +806,8 @@ public class JfGridUpdateService {
                 }*/
                 _dbObject.put("json_data", json_data);
                 //数据分组，删除原有数据，重新保存
-                String rowCol=recordSelectHandle.getFirstBlockRowColByGridKey(gridKey,i);
-                List<JSONObject> blocks = JfGridConfigModel.toDataSplit(rowCol,_dbObject);
+                String rowCol = recordSelectHandle.getFirstBlockRowColByGridKey(gridKey, i);
+                List<JSONObject> blocks = JfGridConfigModel.toDataSplit(rowCol, _dbObject);
                 boolean _result = recordDataUpdataHandle.updateMulti2(blocks, ids);
                 if (!_result) {
                     return "更新失败";
@@ -909,7 +910,7 @@ public class JfGridUpdateService {
 
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
             boolean _result = false;
             String keyName = k;
@@ -980,7 +981,7 @@ public class JfGridUpdateService {
 
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
             boolean _result = false;
             Object calcChain = JfGridFileUtil.getObjectByIndex(_dbObject, "calcchain");
@@ -1053,7 +1054,7 @@ public class JfGridUpdateService {
 
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
             boolean _result = false;
             //不管是否存在，都能直接添加
@@ -1099,7 +1100,7 @@ public class JfGridUpdateService {
 
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
             //不管是否存在，都能直接清除
             /*DBObject v=new BasicDBObject();
@@ -1151,7 +1152,7 @@ public class JfGridUpdateService {
 
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
             JSONObject db = new JSONObject();
             db.put("filter", filter);
@@ -1214,7 +1215,7 @@ public class JfGridUpdateService {
 
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
             JSONObject _config = JfGridFileUtil.getJSONObjectByIndex(_dbObject, "config");
             String keyName = "";
@@ -1272,7 +1273,7 @@ public class JfGridUpdateService {
             //不存在的块
             HashMap<String, JSONObject> _noExistsBlock = new HashMap<String, JSONObject>(4);
 
-            Map<String,String> rowColMap=new HashMap<>(2);
+            Map<String, String> rowColMap = new HashMap<>(2);
 
             for (int x = 0; x < _count; x++) {
                 JSONObject bson = dbObject.get(x);
@@ -1282,12 +1283,12 @@ public class JfGridUpdateService {
                 Object v = bson.get("v");  //	单元格的值 v=null 删除单元格
 
                 //获取行列
-                String rowCol=null;
-                if(rowColMap.containsKey(i)){
-                    rowCol=rowColMap.get(i);
-                }else {
-                    rowCol = recordSelectHandle.getFirstBlockRowColByGridKey(gridKey,i);
-                    rowColMap.put(i,rowCol);
+                String rowCol = null;
+                if (rowColMap.containsKey(i)) {
+                    rowCol = rowColMap.get(i);
+                } else {
+                    rowCol = recordSelectHandle.getFirstBlockRowColByGridKey(gridKey, i);
+                    rowColMap.put(i, rowCol);
                 }
 
                 if (x == 0) {
@@ -1299,7 +1300,7 @@ public class JfGridUpdateService {
                     }
                 }
                 //获取数据所在块的编号
-                String block_id = JfGridConfigModel.getRange(r, c,rowCol);
+                String block_id = JfGridConfigModel.getRange(r, c, rowCol);
 
                 boolean isExists = false;
                 JSONObject _dbObject = null;
@@ -1350,7 +1351,7 @@ public class JfGridUpdateService {
                         if (_celldata != null && _celldata.size() > 0) {
                             int _total = _celldata.size();
                             for (int y = 0; y < _total; y++) {
-                                JSONObject _b =_celldata.getJSONObject(y);
+                                JSONObject _b = _celldata.getJSONObject(y);
                                 if (_b.get("r").toString().equals(r + "") && _b.get("c").toString().equals(c + "")) {
                                     _b.put("v", v);
                                     _position = y;
@@ -1444,7 +1445,7 @@ public class JfGridUpdateService {
     }
 
     /**
-     * 3.1	单元格操作v
+     * 3.1	Cell Operation v
      *
      * @param gridKey
      * @param bson
@@ -1472,11 +1473,11 @@ public class JfGridUpdateService {
             }
 
             //获取行列
-            String rowCol=recordSelectHandle.getFirstBlockRowColByGridKey(gridKey,i);
+            String rowCol = recordSelectHandle.getFirstBlockRowColByGridKey(gridKey, i);
             //获取数据所在块的编号
-            String block_id = JfGridConfigModel.getRange(r, c,rowCol);
+            String block_id = JfGridConfigModel.getRange(r, c, rowCol);
             log.info("block_id---Operation_v" + block_id);
-            //1、先获取原数据（直接获取到某个sheet）
+            //1、Get original data ahead (from sheet)
             JSONObject _dbObject = recordSelectHandle.getCelldataByGridKey(gridKey, i, block_id);
             if (_dbObject == null) {
                 //return "list_id="+gridKey+",index="+i+"的sheet不存在";
@@ -1509,32 +1510,29 @@ public class JfGridUpdateService {
                     }
                 }
             } else {
-                //已经存在块的情况
-                //3、查询集合是否存在此数据
-                int _position = -1;//所在位置，更新使用
-                JSONObject _sourceDb = null;//原始对象 (删除时使用)
-                //用行、列查询
-                //_dbObject=jfGridFileGetService.getCelldataByGridKey(gridKey,i,r,c);
-                if (_dbObject != null) {
-                    //找到数据，找出位置
-                    //BasicDBList _celldata=JfGridFileUtil.getSheetByIndex(_dbObject,i);
-                    JSONArray _celldata = JfGridFileUtil.getSheetByIndex(_dbObject);
-                    if (_celldata != null && _celldata.size() > 0) {
-                        int _total = _celldata.size();
-                        for (int x = 0; x < _total; x++) {
-                            JSONObject _b =  _celldata.getJSONObject(x);
-                            if (_b.get("r").toString().equals(r + "") && _b.get("c").toString().equals(c + "")) {
-                                _position = x;
-                                _sourceDb = _b;
-                                break;
-                            }
+                // If there is already block
+                // Check that data exist in the query
+                int _position = -1; //所在位置，更新使用
+                JSONObject _sourceDb = null; // Original object
+                // Row, Column query
+                //找到数据，找出位置
+                //BasicDBList _celldata=JfGridFileUtil.getSheetByIndex(_dbObject,i);
+                JSONArray _celldata = JfGridFileUtil.getSheetByIndex(_dbObject);
+                if (_celldata != null && _celldata.size() > 0) {
+                    int _total = _celldata.size();
+                    for (int x = 0; x < _total; x++) {
+                        JSONObject _b = _celldata.getJSONObject(x);
+                        if (_b.get("r").toString().equals(r + "") && _b.get("c").toString().equals(c + "")) {
+                            _position = x;
+                            _sourceDb = _b;
+                            break;
                         }
                     }
                 }
 
                 //Query query = new Query();
                 //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(block_id));
-                JSONObject query=getQuery(gridKey,i,block_id);
+                JSONObject query = getQuery(gridKey, i, block_id);
 
                 boolean _result = false;
                 if (v == null) {
@@ -1710,7 +1708,7 @@ public class JfGridUpdateService {
             //更新操作（第一块）
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey2).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-            JSONObject query=getQuery(gridKey2,i,JfGridConfigModel.FirstBlockID);
+            JSONObject query = getQuery(gridKey2, i, JfGridConfigModel.FirstBlockID);
 
             //从文档中获取图表对象
             JSONObject chart = JfGridFileUtil.getJSONObjectByIndex(_dbObject, "chart");
@@ -1769,29 +1767,28 @@ public class JfGridUpdateService {
 
 
     public void Operation_mv(String gridKey, JSONObject bson) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String i = bson.get("i").toString();//	当前sheet的index值
-                    String v = bson.get("v").toString();  //	单元格的值 v=null 删除单元格
-                    log.info("Operation_mv---v" + v);
-                    Object db = bson.get("v");
-                    //更新操作（第一块）
+        // TODO: Make it to use threadpool
+        new Thread(() -> {
+            try {
+                String i = bson.get("i").toString();//	当前sheet的index值
+                String v = bson.get("v").toString();  //	单元格的值 v=null 删除单元格
+                log.info("Operation_mv---v" + v);
+                Object db = bson.get("v");
 
-                    //Query query = new Query();
-                    //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-                    JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
-
-                    boolean _result = recordDataUpdataHandle.updateCellDataListValue(query, "jfgird_select_save", null, db);
-                    if (!_result) {
-                        log.info("更新失败");
+                if (db instanceof JSONObject) {
+                    JSONArray range = ((JSONObject) db).getJSONArray("range");
+                    if (range != null) {
+                        db = range;
                     }
-                } catch (Exception e) {
-                    log.warn(e.getMessage());
-                } finally {
-
                 }
+
+                JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
+                boolean _result = recordDataUpdataHandle.updateCellDataListValue(query, "jfgird_select_save", null, db);
+                if (!_result) {
+                    log.info("Failed to update mv action");
+                }
+            } catch (Exception e) {
+                log.warn(e.getMessage());
             }
         }).start();
     }
@@ -1815,25 +1812,25 @@ public class JfGridUpdateService {
             Object all = bson.get("v");  //	单元格的值 v=null 删除单元格
 
             //获取行列
-            String rowCol=recordSelectHandle.getFirstBlockRowColByGridKey(gridKey,i);
+            String rowCol = recordSelectHandle.getFirstBlockRowColByGridKey(gridKey, i);
 
             //判断第一个块是否存在
             Integer isHave = recordSelectHandle.getFirstBlockByGridKey(gridKey, i);
-            log.info("isHave---Operation_bv {}" , isHave);
+            log.info("isHave---Operation_bv {}", isHave);
             if (isHave == null || isHave == 0) {
-                log.error("list_id=" + gridKey + ",index=" + i + "的sheet不存在");
+                log.error("No sheet exist at {} in list_id {} ", i, gridKey);
             }
             //已存在的块
-            HashMap<String, JSONObject> _existsBlock = new HashMap<String, JSONObject>();
+            HashMap<String, JSONObject> _existsBlock = new HashMap<>();
             //不存在的块
-            HashMap<String, JSONObject> _noExistsBlock = new HashMap<String, JSONObject>();
+            HashMap<String, JSONObject> _noExistsBlock = new HashMap<>();
             JSONArray data = (JSONArray) all;
-            for (int j=0; j<data.size(); j++) {
-                JSONArray arrayList=(JSONArray)data.get(j);
+            for (int j = 0; j < data.size(); j++) {
+                JSONArray arrayList = (JSONArray) data.get(j);
                 int cl = c;
                 for (Object v : arrayList) {
                     //获取数据所在块的编号
-                    String block_id = JfGridConfigModel.getRange(r, cl,rowCol);
+                    String block_id = JfGridConfigModel.getRange(r, cl, rowCol);
                     boolean isExists = false;
                     JSONObject _dbObject = null;
                     if (_existsBlock.containsKey(block_id)) {
@@ -1907,7 +1904,7 @@ public class JfGridUpdateService {
                             if (_celldata != null && _celldata.size() > 0) {
                                 int _total = _celldata.size();
                                 for (int y = 0; y < _total; y++) {
-                                    JSONObject _b =  _celldata.getJSONObject(y);
+                                    JSONObject _b = _celldata.getJSONObject(y);
                                     if (_b.get("r").toString().equals(r + "") && _b.get("c").toString().equals(cl + "")) {
                                         _position = y;
                                         break;
@@ -1977,7 +1974,7 @@ public class JfGridUpdateService {
 
                     //Query query = new Query();
                     //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-                    JSONObject query=getQuery(gridKey,i,JfGridConfigModel.FirstBlockID);
+                    JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
 
                     JSONObject b = new JSONObject();
                     b.put("row", updateRow);
@@ -1992,6 +1989,7 @@ public class JfGridUpdateService {
             }
             log.info("修改行列数据结果--end");
         } catch (Exception ex) {
+            ex.printStackTrace();
             log.error(ex.getMessage());
         }
 
@@ -2080,46 +2078,46 @@ public class JfGridUpdateService {
     }
 
 
-
-
     /**
      * 初始化测试数据
      */
-    public void initTestData(){
-        List<String> listName=new ArrayList<String>(2){{
+    public void initTestData() {
+        List<String> listName = new ArrayList<String>(2) {{
             add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2xc");
             add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3");
         }};
         initTestData(listName);
     }
-    public void initTestData(List<String> listName){
+
+    public void initTestData(List<String> listName) {
         //int delCount=pgGridFileDao.deleteAll();
         //log.info("del row:{}",delCount);
-        int[] delCount=recordDelHandle.delete(listName);
-        log.info("del row:{}",delCount);
-        List<GridRecordDataModel> models=new ArrayList<>(6);
+        int[] delCount = recordDelHandle.delete(listName);
+        log.info("del row:{}", delCount);
+        List<GridRecordDataModel> models = new ArrayList<>(6);
 //        List<String> listName=new ArrayList<String>(2){{
 //            add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2xc");
 //            add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3");
 //        }};
-        for(String n:listName) {
+        for (String n : listName) {
             for (int x = 0; x < 3; x++) {
-                if(x==0){
-                    models.add(strToModel(n, (x+1)+"",1,x));
-                }else {
-                    models.add(strToModel(n, (x+1)+"",0,x));
+                if (x == 0) {
+                    models.add(strToModel(n, (x + 1) + "", 1, x));
+                } else {
+                    models.add(strToModel(n, (x + 1) + "", 0, x));
                 }
             }
         }
-        String result=insert(models);
+        String result = insert(models);
         log.info(result);
     }
-    public static GridRecordDataModel strToModel(String list_id, String index, int status, int order){
-        String strSheet="{\"row\":84,\"name\":\"reSheetName\",\"chart\":[],\"color\":\"\",\"index\":\"reIndex\",\"order\":reOrder,\"column\":60,\"config\":{},\"status\":reStatus,\"celldata\":[],\"ch_width\":4748,\"rowsplit\":[],\"rh_height\":1790,\"scrollTop\":0,\"scrollLeft\":0,\"visibledatarow\":[],\"visibledatacolumn\":[],\"jfgird_select_save\":[],\"jfgrid_selection_range\":{}}";
-        strSheet=strSheet.replace("reSheetName","Sheet"+index).replace("reIndex",index).replace("reOrder",order+"").replace("reStatus",status+"");
 
-        JSONObject bson=JSONObject.parseObject(strSheet);
-        GridRecordDataModel model=new GridRecordDataModel();
+    public static GridRecordDataModel strToModel(String list_id, String index, int status, int order) {
+        String strSheet = "{\"row\":84,\"name\":\"reSheetName\",\"chart\":[],\"color\":\"\",\"index\":\"reIndex\",\"order\":reOrder,\"column\":60,\"config\":{},\"status\":reStatus,\"celldata\":[],\"ch_width\":4748,\"rowsplit\":[],\"rh_height\":1790,\"scrollTop\":0,\"scrollLeft\":0,\"visibledatarow\":[],\"visibledatacolumn\":[],\"jfgird_select_save\":[],\"jfgrid_selection_range\":{}}";
+        strSheet = strSheet.replace("reSheetName", "Sheet" + index).replace("reIndex", index).replace("reOrder", order + "").replace("reStatus", status + "");
+
+        JSONObject bson = JSONObject.parseObject(strSheet);
+        GridRecordDataModel model = new GridRecordDataModel();
         model.setBlock_id("fblock");
         model.setRow_col("5_5");
         model.setIndex(index);
@@ -2131,18 +2129,19 @@ public class JfGridUpdateService {
         return model;
     }
 
-    private JSONObject getQuery(String gridKey,String i,String blockId){
-        JSONObject query=new JSONObject();
-        query.put("list_id",gridKey);
-        query.put("index",i);
-        query.put("block_id",blockId);
+    private JSONObject getQuery(String gridKey, String i, String blockId) {
+        JSONObject query = new JSONObject();
+        query.put("list_id", gridKey);
+        query.put("index", i);
+        query.put("block_id", blockId);
         return query;
     }
 
     /**
+     * Init the excel import function
+     *
      * @param docCode   文档code
      * @param modelList 文档数据
-     * @description 初始化导入文档
      * @author zhouhang
      * @date 2021/4/22
      */

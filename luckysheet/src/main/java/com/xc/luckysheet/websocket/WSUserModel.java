@@ -11,14 +11,16 @@ import java.util.Hashtable;
 @Data
 public class WSUserModel {
 
+    public static final String USER_NAME = "userName";
+
     /**
      * 用户key
      */
-    public static final String USER_TOKEN="t";
+    public static final String USER_TOKEN = "t";
     /**
      * 文档key
      */
-    public static final String USER_GRIDKEY="g";
+    public static final String USER_GRIDKEY = "g";
 
     /**
      * ws-session
@@ -41,43 +43,52 @@ public class WSUserModel {
      */
     private String userName;
 
-    public WSUserModel(WebSocketSession ws){
-        this.id=ws.getId();
-        this.userName="testUser-"+ws.getId();
-        if(ws.getAttributes().get(USER_TOKEN)!=null){
-            this.token=ws.getAttributes().get(USER_TOKEN).toString();
-        }else{
-            this.token="i";
-        }
-        if(ws.getAttributes().get(USER_GRIDKEY)!=null){
-            this.gridKey=ws.getAttributes().get(USER_GRIDKEY).toString();
-        }else{
-            this.gridKey="1";
+    public WSUserModel(WebSocketSession ws) {
+        this.id = ws.getId();
+
+        if (ws.getAttributes().get(USER_TOKEN) != null) {
+            this.token = ws.getAttributes().get(USER_TOKEN).toString();
+        } else {
+            this.token = "i";
         }
 
-        this.ws=ws;
+        if (ws.getAttributes().get(USER_GRIDKEY) != null) {
+            this.gridKey = ws.getAttributes().get(USER_GRIDKEY).toString();
+        } else {
+            this.gridKey = "1";
+        }
+
+        if (ws.getAttributes().get(USER_NAME) != null) {
+            this.userName = ws.getAttributes().get(USER_NAME).toString();
+        } else {
+            this.userName = "user-name";
+        }
+
+        this.ws = ws;
     }
 
 
     /**
      * 外层key gridKey（文档id），内层key session ID（用户id）
+     *
      * @param maps
      * @param wm
      */
-    public static void webSocketMapAdd(Hashtable<String,Hashtable<String,WSUserModel>> maps,WSUserModel wm){
-        if(maps.containsKey(wm.getGridKey())){
-            maps.get(wm.getGridKey()).put(wm.getId(),wm);
-        }else{
-            Hashtable<String,WSUserModel> _map=new Hashtable<String,WSUserModel>();
-            _map.put(wm.getId(),wm);
-            maps.put(wm.getGridKey(),_map);
+    public static void webSocketMapAdd(Hashtable<String, Hashtable<String, WSUserModel>> maps, WSUserModel wm) {
+        if (maps.containsKey(wm.getGridKey())) {
+            maps.get(wm.getGridKey()).put(wm.getId(), wm);
+        } else {
+            Hashtable<String, WSUserModel> _map = new Hashtable<String, WSUserModel>();
+            _map.put(wm.getId(), wm);
+            maps.put(wm.getGridKey(), _map);
         }
     }
-    public static void webSocketMapRemove(Hashtable<String,Hashtable<String,WSUserModel>> maps, WSUserModel wm){
-        if(maps.containsKey(wm.getGridKey())){
-            if(maps.get(wm.getGridKey())!=null){
-                Hashtable<String,WSUserModel> _map=maps.get(wm.getGridKey());
-                if(_map!=null && _map.containsKey(wm.getId())){
+
+    public static void webSocketMapRemove(Hashtable<String, Hashtable<String, WSUserModel>> maps, WSUserModel wm) {
+        if (maps.containsKey(wm.getGridKey())) {
+            if (maps.get(wm.getGridKey()) != null) {
+                Hashtable<String, WSUserModel> _map = maps.get(wm.getGridKey());
+                if (_map != null && _map.containsKey(wm.getId())) {
                     _map.remove(wm.getId());
                 }
             }

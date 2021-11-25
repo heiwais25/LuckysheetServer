@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  图表格页面调用
+ * 图表格页面调用
+ *
  * @author Administrator
  */
 @Slf4j
@@ -44,51 +45,51 @@ public class JfGridFileController {
 
     /**
      * 默认加载表格 分块
+     *
      * @param request
      * @param response
      * @param gridKey
      * @return
      */
-    @ApiOperation(value = "默认加载表格",notes = "默认加载表格")
+    @ApiOperation(value = "默认加载表格", notes = "默认加载表格")
     @PostMapping("/load")
     public String load(HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "") String gridKey) {
         //告诉浏览器，当前发送的是gzip格式的内容
         response.setHeader("Content-Encoding", "gzip");
         response.setContentType("text/html");
-        String resultStr="";
-        if(gridKey.trim().length()!=0){
+        String resultStr = "";
+        if (gridKey.trim().length() != 0) {
             try {
-                String _checkStr=check(request,gridKey.toString(),null,OperationTypeEnum.Read);
-                if(_checkStr.length()>0){
+                String _checkStr = check(request, gridKey.toString(), null, OperationTypeEnum.Read);
+                if (_checkStr.length() > 0) {
                     return null;
                 }
-                List<JSONObject> dbObject=null;
-                dbObject=jfGridFileGetService.getDefaultByGridKey(gridKey);
-                if(dbObject!=null){
+                List<JSONObject> dbObject;
+                dbObject = jfGridFileGetService.getDefaultByGridKey(gridKey);
+                if (dbObject != null) {
                     delErrorKey(dbObject);
-                    resultStr=JsonUtil.toJson(dbObject);
+                    resultStr = JsonUtil.toJson(dbObject);
                 }
             } catch (Exception e) {
-                log.error(gridKey+e.getMessage());
+                log.error(gridKey + e.getMessage());
             }
-
-
         }
         log.info("load");
         try {
-            byte dest[]= Pako_GzipUtils.compress2(resultStr);
-            OutputStream out=response.getOutputStream();
+            byte dest[] = Pako_GzipUtils.compress2(resultStr);
+            OutputStream out = response.getOutputStream();
             out.write(dest);
             out.close();
             out.flush();
         } catch (Exception e) {
-            log.error("load---ioerror:"+e);
+            log.error("load---ioerror:" + e);
         }
         return null;
     }
 
     /**
      * 加载指定表格
+     *
      * @param map
      * @param request
      * @param response
@@ -96,38 +97,38 @@ public class JfGridFileController {
      * @param index
      * @return
      */
-    @ApiOperation(value = "加载指定表格",notes = "加载指定表格")
+    @ApiOperation(value = "加载指定表格", notes = "加载指定表格")
     @PostMapping("/loadsheet")
     public byte[] loadsheet(Map map, HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(defaultValue = "") String gridKey,
                             @RequestParam(defaultValue = "") String[] index) {
-        log.info("loadsheet--gridKey:"+gridKey+" index:"+ Arrays.toString(index));
+        log.info("loadsheet--gridKey:" + gridKey + " index:" + Arrays.toString(index));
         ////告诉浏览器，当前发送的是gzip格式的内容
         response.setHeader("Content-Encoding", "gzip");
         response.setContentType("text/html");
-        String resultStr="";
-        if(gridKey.trim().length()!=0){
+        String resultStr = "";
+        if (gridKey.trim().length() != 0) {
             try {
-                String _id=gridKey;
-                String _checkStr=check(request,_id,null,OperationTypeEnum.Read);
+                String _id = gridKey;
+                String _checkStr = check(request, _id, null, OperationTypeEnum.Read);
                 log.info(_checkStr);
-                if(_checkStr.length()>0){
+                if (_checkStr.length() > 0) {
                     return null;
                 }
-                LinkedHashMap dbObject=null;
-                dbObject=jfGridFileGetService.getByGridKeys(_id, Arrays.asList(index));
+                LinkedHashMap dbObject = null;
+                dbObject = jfGridFileGetService.getByGridKeys(_id, Arrays.asList(index));
                 log.info("loadsheet--dbObject--");
-                if(dbObject!=null){
-                    resultStr=JsonUtil.toJson(dbObject);
+                if (dbObject != null) {
+                    resultStr = JsonUtil.toJson(dbObject);
                 }
             } catch (Exception e) {
-                log.info(gridKey+e.getMessage());
+                log.info(gridKey + e.getMessage());
             }
         }
 
-        byte dest[]= Pako_GzipUtils.compress2(resultStr);
+        byte dest[] = Pako_GzipUtils.compress2(resultStr);
         log.info("loadsheet");
-        OutputStream out=null;
+        OutputStream out = null;
         try {
             out = response.getOutputStream();
             out.write(dest);
@@ -135,9 +136,9 @@ public class JfGridFileController {
             out.flush();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            log.error("loadsheet---ioerror:"+e);
-        }catch (Exception ex){
-            log.error("loadsheet---error:"+ex);
+            log.error("loadsheet---ioerror:" + e);
+        } catch (Exception ex) {
+            log.error("loadsheet---error:" + ex);
         }
 
         return null;
@@ -145,34 +146,35 @@ public class JfGridFileController {
 
     /**
      * 文档权限的检查
+     *
      * @param request
      * @param _id
      * @param curmodel
      * @param operationTypeEnum
      * @return
      */
-    private String check(HttpServletRequest request, String _id, LuckySheetGridModel curmodel, OperationTypeEnum operationTypeEnum){
+    private String check(HttpServletRequest request, String _id, LuckySheetGridModel curmodel, OperationTypeEnum operationTypeEnum) {
         //校验代码
         return "";
     }
-
 
 
     /**
      * 数据返回时，去掉数组变字符串，引发错误的key
      * 删除会发生错误的对象
      */
-    private void delErrorKey(List<JSONObject> dbObject){
-        if(dbObject!=null){
-            for(JSONObject obj :dbObject){
-                delErrorKeyByCheck(obj,"calcChain");
-                delErrorKeyByCheck(obj,"luckysheet_alternateformat_save");
-                delErrorKeyByCheck(obj,"luckysheet_conditionformat_save");
+    private void delErrorKey(List<JSONObject> dbObject) {
+        if (dbObject != null) {
+            for (JSONObject obj : dbObject) {
+                delErrorKeyByCheck(obj, "calcChain");
+                delErrorKeyByCheck(obj, "luckysheet_alternateformat_save");
+                delErrorKeyByCheck(obj, "luckysheet_conditionformat_save");
             }
         }
     }
-    private void delErrorKeyByCheck(JSONObject obj,String key){
-        if(obj.containsKey(key) && obj.get(key) instanceof String){
+
+    private void delErrorKeyByCheck(JSONObject obj, String key) {
+        if (obj.containsKey(key) && obj.get(key) instanceof String) {
             obj.remove(key);
         }
     }
