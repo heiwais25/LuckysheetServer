@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author Administrator
@@ -47,6 +48,9 @@ public class JfGridUpdateService {
 
     @Resource(name = "postgresRecordSelectHandle")
     private IRecordSelectHandle recordSelectHandle;
+
+    @Resource(name = "gridServiceExecutorService")
+    private ExecutorService executorService;
 
 //    @Resource(name = "mysqlRecordDataInsertHandle")
 //    private IRecordDataInsertHandle recordDataInsertHandle;
@@ -1767,8 +1771,7 @@ public class JfGridUpdateService {
 
 
     public void Operation_mv(String gridKey, JSONObject bson) {
-        // TODO: Make it to use threadpool
-        new Thread(() -> {
+        executorService.submit(() -> {
             try {
                 String i = bson.get("i").toString();//	当前sheet的index值
                 String v = bson.get("v").toString();  //	单元格的值 v=null 删除单元格
@@ -1790,9 +1793,8 @@ public class JfGridUpdateService {
             } catch (Exception e) {
                 log.warn(e.getMessage());
             }
-        }).start();
+        });
     }
-
 
     //3.1	批量单元格操作v
     private String Operation_rv(String gridKey, JSONObject bson) {
@@ -2058,14 +2060,11 @@ public class JfGridUpdateService {
         RedisLock redisLock = new RedisLock(redisTemplate, key);
         try {
             if (redisLock.lock()) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (JSONObject dbObject : bsons) {
-                            Operation_rv(gridKey, dbObject);
-                        }
+                executorService.submit(() -> {
+                    for (JSONObject dbObject : bsons) {
+                        Operation_rv(gridKey, dbObject);
                     }
-                }).start();
+                });
             } else {
                 Thread.sleep(100);
                 loadRvMsgForLock(gridKey, bsons, key);

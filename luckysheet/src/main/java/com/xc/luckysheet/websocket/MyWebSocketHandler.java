@@ -101,11 +101,11 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         if ("rub".equals(content)) {
             log.info("Keep Connection");
         } else {
-            log.info("消息解压前：" + MyStringUtil.getStringShow(content));
+            log.info("Before unzip： {}", MyStringUtil.getStringShow(content));
             String contentReal = Pako_GzipUtils.unCompressToURI(content);
-            log.info("消息解压后：" + MyStringUtil.getStringShow(contentReal));
-            //content=contentReal;
-            JSONObject bson = null;
+            log.info("After unzip： {}", MyStringUtil.getStringShow(contentReal));
+
+            JSONObject bson;
             try {
                 log.info(contentReal);
                 bson = JSONObject.parseObject(contentReal);
