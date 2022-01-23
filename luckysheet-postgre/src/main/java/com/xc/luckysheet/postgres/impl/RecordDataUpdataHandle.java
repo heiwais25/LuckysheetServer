@@ -373,8 +373,8 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             log.info("id:" + id);
             String delsql = "DELETE from " + JfGridConfigModel.TABLENAME + " where list_id=? and block_id in (" + id + ") and index=? ";
             jdbcTemplate_postgresql.update(delsql, new Object[]{models.get(0).getList_id(), models.get(0).getIndex()});
-            String sql = "insert into " + JfGridConfigModel.TABLENAME + " (id,block_id,index,list_id,status,\"order\",json_data,is_delete) values " +
-                    " (nextval('luckysheet_id_seq'),?,?,?,?,?,?,0)";
+            String sql = "insert into " + JfGridConfigModel.TABLENAME + " (block_id,index,list_id,status,\"order\",json_data,is_delete) values " +
+                    " (?,?,?,?,?,?,0)";
             List<Object[]> batch = new ArrayList<Object[]>();
             for (GridRecordDataModel b : models) {
                 List<Object> objectList = new ArrayList<Object>();

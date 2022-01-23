@@ -142,11 +142,11 @@ public class JfGridUpdateService {
                         _result = Operation_v(gridKey, bson);
                         break;
                     case cg:
-                        //3.2   config操作cg （第一块）
+                        //3.2   config manipulation cg （第一块）
                         _result = Operation_cg(gridKey, bson);
                         break;
                     case all:
-                        //3.3 通用保存 （第一块）
+                        //3.3 general purpose storage （第一块）
                         _result = Operation_all(gridKey, bson);
                         break;
                     case fc:
@@ -166,7 +166,7 @@ public class JfGridUpdateService {
                         _result = Operation_fsr(gridKey, bson);
                         break;
                     case drc:
-                        //3.5.1 删除行或列   gzip 分块
+                        //3.5.1 Delete Row or Columns   gzip 分块
                         _result = Operation_drc(gridKey, bson);
                         break;
                     case arc:
@@ -1186,7 +1186,7 @@ public class JfGridUpdateService {
             String i = bson.get("i").toString();
             String k = bson.get("k").toString();
 
-            JSONObject _v = null;//需要替换的值
+            JSONObject _v = null; // Values to be replaced
             if (bson.get("v") != null) {
                 _v = bson.getJSONObject("v");
             }

@@ -20,7 +20,7 @@ spring:
 db:
   postgre:
     druid:
-      url: jdbc:postgresql://127.0.0.1:15432/luckysheetdb?useSSL=false
+      url: jdbc:postgresql://127.0.0.1:5432/trena?schema=public&useSSL=false
       driverClassName: org.postgresql.Driver
       username: admin
       password: admin

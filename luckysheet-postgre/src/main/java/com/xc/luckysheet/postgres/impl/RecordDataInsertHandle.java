@@ -40,8 +40,8 @@ public class RecordDataInsertHandle extends BaseHandle implements IRecordDataIns
             log.error(e.getMessage());
         }
 
-        String sql = "insert into " + JfGridConfigModel.TABLENAME + " (id,block_id,index,list_id,status,json_data,\"order\",is_delete) values " +
-                " (nextval('luckysheet_id_seq'),?,?,?,?,?,?,0)";
+        String sql = "insert into " + JfGridConfigModel.TABLENAME + " (block_id,index,list_id,status,json_data,\"order\",is_delete) values " +
+                " (?,?,?,?,?,?,0)";
         try {
             jdbcTemplate_postgresql.update(sql, pgModel.getBlock_id().trim(), pgModel.getIndex(), pgModel.getList_id(), pgModel.getStatus(), pg, pgModel.getOrder());
             return "";
@@ -59,8 +59,8 @@ public class RecordDataInsertHandle extends BaseHandle implements IRecordDataIns
      */
     @Override
     public String InsertIntoBatch(List<GridRecordDataModel> models) {
-        String sql = "insert into " + JfGridConfigModel.TABLENAME + " (id,block_id,row_col,index,list_id,status,\"order\",json_data,is_delete) values " +
-                " (nextval('luckysheet_id_seq'),?,?,?,?,?,?,?,0)";
+        String sql = "insert into " + JfGridConfigModel.TABLENAME + " (block_id,row_col,index,list_id,status,\"order\",json_data,is_delete) values " +
+                " (?,?,?,?,?,?,?,0)";
         List<Object[]> batch = new ArrayList<Object[]>();
         for (GridRecordDataModel b : models) {
             List<Object> objectList = new ArrayList<Object>();
@@ -101,8 +101,8 @@ public class RecordDataInsertHandle extends BaseHandle implements IRecordDataIns
      */
     @Override
     public String InsertBatchDb(List<JSONObject> models) {
-        String sql = "insert into " + JfGridConfigModel.TABLENAME + " (id,block_id,row_col,index,list_id,status,\"order\",json_data,is_delete) values " +
-                " (nextval('luckysheet_id_seq'),?,?,?,?,?,?,?,0)";
+        String sql = "insert into " + JfGridConfigModel.TABLENAME + " (block_id,row_col,index,list_id,status,\"order\",json_data,is_delete) values " +
+                " (?,?,?,?,?,?,?,0)";
         List<Object[]> batch = new ArrayList<Object[]>();
         int order = 0;
         for (JSONObject b : models) {
