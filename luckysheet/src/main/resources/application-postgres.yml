@@ -6,8 +6,8 @@ showSql: true
 
 spring:
   redis:
-    host: 127.0.0.1
-    port: 6379
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
     timeout: 10000ms
     lettuce:
       pool:
@@ -20,10 +20,10 @@ spring:
 db:
   postgre:
     druid:
-      url: jdbc:postgresql://127.0.0.1:5432/trena?schema=public&useSSL=false
+      url: jdbc:postgresql://${POSTGRESQL_HOST:127.0.0.1}:${POSTGRESQL_PORT:5432}/${POSTGRESQL_DB}?schema=public&useSSL=false
       driverClassName: org.postgresql.Driver
-      username: admin
-      password: admin
+      username: ${POSTGRESQL_USERNAME}
+      password: ${POSTGRESQL_PASSWORD}
       # 初始化大小，最小，最大
       initial-size: 8
       min-idle: 1

@@ -1,43 +1,43 @@
 # Luckysheet Server
 
-简体中文 | [English](./README_luckysheet.md)
+English| [简体中文](./README-zh.md)
 
-## 介绍
-💻[Luckysheet](https://gitee.com/mengshukeji/Luckysheet/) 官方Java版本后台。
+## Introduction
+💻[Luckysheet](https://github.com/mengshukeji/Luckysheet/) official Java version backend.
 
-## 演示
-- [协同编辑Demo](http://luckysheet.lashuju.com/demo/)（注意：请大家别操作频繁，防止搞崩服务器）
+## Demo
+- [Cooperative editing demo](http://luckysheet.lashuju.com/demo/)(Note: Please do not operate frequently to prevent the server from crashing)
 
-## 部署
+## Deploy
 - [LuckysheetServer Starter](https://github.com/mengshukeji/LuckysheetServerStarter)
 
-## 环境
+## Requirements
 
 jdk >= 1.8
 
-postgre >= 10 (支持jsonb的版本)
-- [Docker部署postgre](https://www.cnblogs.com/xuchen0117/p/13863509.html)
-- [postgre中jsonb字段处理](https://www.cnblogs.com/xuchen0117/p/13890710.html)
+postgre >= 10 (Support jsonb version)
+- [Docker deploys postgre](https://www.cnblogs.com/xuchen0117/p/13863509.html)
+- [Jsonb field processing in postgre](https://www.cnblogs.com/xuchen0117/p/13890710.html)
 
 redis >= 3
-- [Docker部署Redis](https://www.cnblogs.com/xuchen0117/p/12183399.html)
-- [Docker部署Redis集群](https://www.cnblogs.com/xuchen0117/p/11678931.html)
+- [Docker deploys Redis](https://www.cnblogs.com/xuchen0117/p/12183399.html)
+- [Docker deploys Redis cluster](https://www.cnblogs.com/xuchen0117/p/11678931.html)
 
 
 nginx >= 1.12
-- [Docker部署Nginx](https://www.cnblogs.com/xuchen0117/p/11934202.html)
+- [Docker deploys Nginx](https://www.cnblogs.com/xuchen0117/p/11934202.html)
 
 maven >= 3.6 
 
-IntelliJ IDEA >= 12 (非必须)
+IntelliJ IDEA >= 12 (not necessary)
 
-## 数据库初始化
+## Database initialization
 
-创建数据库
+Create database
 ```
 CREATE DATABASE luckysheetdb
 ```
-创建序列
+Create sequence
 ```
 DROP SEQUENCE IF EXISTS "public"."luckysheet_id_seq";
 CREATE SEQUENCE "public"."luckysheet_id_seq"
@@ -47,7 +47,7 @@ MAXVALUE 9999999999999
 START 1
 CACHE 10;
 ```
-创建表
+Create table
 ```
 DROP TABLE IF EXISTS "public"."luckysheet";
 CREATE TABLE "luckysheet" (
@@ -86,29 +86,29 @@ CREATE INDEX "status" ON "public"."luckysheet" USING btree (
 ALTER TABLE "public"."luckysheet" ADD CONSTRAINT "luckysheet_pkey" PRIMARY KEY ("id");
 ```
 
-插入初始化语句
+Insert initialization statement
 ```
 INSERT INTO "public"."luckysheet" VALUES (nextval('luckysheet_id_seq'), 'fblock', '', '1', '1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3', 1, '{"row":84,"name":"Sheet1","chart":[],"color":"","index":"1","order":0,"column":60,"config":{},"status":0,"celldata":[],"ch_width":4748,"rowsplit":[],"rh_height":1790,"scrollTop":0,"scrollLeft":0,"visibledatarow":[],"visibledatacolumn":[],"jfgird_select_save":[],"jfgrid_selection_range":{}}', 0, 0);
 INSERT INTO "public"."luckysheet" VALUES (nextval('luckysheet_id_seq'), 'fblock', '', '2', '1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3', 0, '{"row":84,"name":"Sheet2","chart":[],"color":"","index":"2","order":1,"column":60,"config":{},"status":0,"celldata":[],"ch_width":4748,"rowsplit":[],"rh_height":1790,"scrollTop":0,"scrollLeft":0,"visibledatarow":[],"visibledatacolumn":[],"jfgird_select_save":[],"jfgrid_selection_range":{}}', 1, 0);
 INSERT INTO "public"."luckysheet" VALUES (nextval('luckysheet_id_seq'), 'fblock', '', '3', '1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3', 0, '{"row":84,"name":"Sheet3","chart":[],"color":"","index":"3","order":2,"column":60,"config":{},"status":0,"celldata":[],"ch_width":4748,"rowsplit":[],"rh_height":1790,"scrollTop":0,"scrollLeft":0,"visibledatarow":[],"visibledatacolumn":[],"jfgird_select_save":[],"jfgrid_selection_range":{}}', 2, 0);
 ```
 
-## nginx配置 
-http块配置
+## nginx configuration 
+http block configuration
 ```
-#websocket配置
+#websocket configuration
 map $http_upgrade $connection_upgrade {
     default upgrade;
     ''      close;
 }
 
 upstream ws_dataluckysheet {
-      server 项目的ip:端口;
+      server [Project ip]: [port];
 }    
 ```
-server块配置
+server block configuration
 ```
-#websocket配置
+#websocket configuration
 location /luckysheet/websocket/luckysheet {
     proxy_pass http://ws_dataluckysheet/luckysheet/websocket/luckysheet;
 
@@ -122,131 +122,118 @@ location /luckysheet/websocket/luckysheet {
     proxy_set_header Connection "upgrade";
 }       
 
-#动态资源配置
+#Dynamic resource configuration
 location /luckysheet/ {
     proxy_pass http://ws_dataluckysheet;
 }
 
-#静态资源配置，Luckysheet前端代码目录
-location / {
-    root   /usr/share/nginx/html; # 可修改为自己的资源路径
+#Static resource configuration
+location /luckysheet/demo/ {
+    root /usr/share/nginx/html;
     index  index.html index.htm;
 }
 ```
 
-### 访问测试
+### Access test
 
-- 通过`项目的ip:端口`访问静态主页
-- 通过`项目的ip:端口?share`访问协同编辑主页
+- Access the static homepage through `[project ip]:[port]`
+- Access the collaborative editing homepage through `[project ip]:[port]?share`
 
-## 项目用法 
-application.yml 项目配置
+## Project usage 
+application.yml Project configuration
 ```
 server:
-  port: 项目端口
+  port: [Project port]
   servlet:
-    context-path: /项目路径
-redis.channel: redis通道名称
-row_size: 表格中行数 默认500
-col_size: 表格中列数 默认500
-pgSetUp: 是否启用pgsql作为存储数据（0为是，1为否）目前只能设置为0
+    context-path: /[Project path]
+redis.channel: [redis channel name]
+row_size: [The number of rows in the table, default 500]
+col_size: [Number of columns in the table, default 500]
+pgSetUp: [Whether to enable pgsql as storage data (0 for yes, 1 for no), currently can only be set to 0]
 ```
-application-dev.yml 数据库配置
+application-dev.yml Database configuration
 ```
 spring:
   redis:
-    host: ip地址
-    port: 端口
-    password: 密码
+    host: [ip address]
+    port: [port]
+    password: [password]
     
 db:
   postgre:
     druid:
-      url: jdbc:postgresql://ip地址:端口/luckysheetdb?useSSL=false
+      url: jdbc:postgresql://[ip address]: [port]/luckysheetdb?useSSL=false
       driverClassName: org.postgresql.Driver
-      username: 用户名
-      password: 密码    
+      username: [username]
+      password: [password]    
 ```
-logback-spring.xml 日志配置
+logback-spring.xml Log configuration
 ```
- <property name="log.path" value="日志输出目录"/>
+ <property name="log.path" value="[Log output directory]"/>
 ```
-## 项目说明
+## project instruction
 
-### Luckysheet模块主要类说明
-com.xc.luckysheet.WebApplication 项目启动类
+### Luckysheet module main class description
+com.xc.luckysheet.WebApplication Project startup
 
 com.xc.luckysheet.controller
 ```
-JfGridFileController 表格数据加载类
-TestController  postgre redis 测试类 
+JfGridFileController Table data loading class
+TestController  postgre redis Test class 
 ```
 com.xc.luckysheet.entity
 ```
-SheetOperationEnum 表格操作类型
-JfGridConfigModel 表格块对象
-LuckySheetGridModel 表格数据库对象
-PgGridDataModel 表格sheet数据库对象
+SheetOperationEnum Table operation type
+JfGridConfigModel Table block object
+LuckySheetGridModel Tabular database objects
+PgGridDataModel Table database object
 ```
 com.xc.luckysheet.postgre
 ```
-PostgresGridFileDao postgre数据库操作
-PostgresGridFileGetService 记录操作
-PostgresJfGridUpdateService 更新处理
+PostgresGridFileDao postgre database operation
+PostgresGridFileGetService Record operation
+PostgresJfGridUpdateService Update processing
 ```
 com.xc.luckysheet.redisserver
 ```
-RedisLock redis锁
-RedisMessageListener 管道监听类
-RedisMessagePublish 管道发布类
+RedisLock redis lock
+RedisMessageListener Pipeline monitoring class
+RedisMessagePublish Pipeline release class
 ```
 com.xc.luckysheet.service
 ```
-ConfigerService 配置类
-ScheduleService 对定时数据库初始化
+ConfigerService Configuration class
+ScheduleService Initialize the timing database
 ```
 com.xc.luckysheet.utils
 ```
-GzipHandle 信息压缩
-Pako_GzipUtils WebSocket信息压缩
+GzipHandle Information compression
+Pako_GzipUtils WebSocket information compression
 ```
 com.xc.luckysheet.websocket
 ```
-IpAndPortUtil 获取当前服务的ip与端口
-MyWebSocketHandler Socket处理器(包括发送信息，接收信息，信息错误等方法。)
-MyWebSocketInterceptor Socket建立连接（握手）和断开
-WebSocketConfig 注册WebSocket，设置WebSocket的地址
-WSUserModel WebSocket对象
+IpAndPortUtil Get the IP and port of the current service
+MyWebSocketHandler Socket processor (including methods for sending information, receiving information, and information errors.)
+MyWebSocketInterceptor Socket connection (handshake) and disconnection
+WebSocketConfig Register WebSocket, Set the address of WebSocket
+WSUserModel WebSocket object
 ```
 
-### common模块主要类说明
+### Main class description of common module
 ```
-com.xc.common.config.datasource.DataSourceConfig 数据源配置类
-com.xc.common.config.redis.RedisConfig redis配置类
-```
-
-### websocket 返回数据格式
-```
-{
-    createTime: 命令发送时间
-    data:{} 修改的命令
-    id: "7a"   websocket的id
-    returnMessage: "success"
-    status: "0"  0告诉前端需要根据data的命令修改  1无意义
-    type: 0：连接成功，1：发送给当前连接的用户，2：发送信息给其他用户，3：发送选区位置信息，999：用户连接断开
-    username: 用户名
-}
+com.xc.common.config.datasource.DataSourceConfig Data source configuration class
+com.xc.common.config.redis.RedisConfig redis configuration class
 ```
 
-## 相关链接
-- [Luckysheet官方文档](https://mengshukeji.gitee.io/LuckysheetDocs/)
-- [Luckysheet如何把表格里的数据保存到数据库](https://www.cnblogs.com/DuShuSir/p/13857874.html)
+## Links
+- [Luckysheet Documentation](https://mengshukeji.github.io/LuckysheetDocs/)
+- [How Luckysheet saves the data in the table to the database](https://www.cnblogs.com/DuShuSir/p/13857874.html)
 
-## 贡献者和感谢
+## Authors and acknowledgment
 
-### 团队
+### Team
 - [@iamxuchen800117](https://github.com/iamxuchen800117)
 - [@wpxp123456](https://github.com/wpxp123456)
 
-## 版权信息
-有关详细信息，请查阅附件的[LICENSE](./LICENSE)文件。原始作者保留Apache 2.0许可未明确授予的所有权利。
+## License
+Please consult the attached [LICENSE](./LICENSE) file for details. All rights not explicitly granted by the Apache 2.0 License are reserved by the Original Author.
