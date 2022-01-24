@@ -22,6 +22,14 @@ mvn package
 docker build -t luckysheet-server:${TAG} .
 ```
 
+3. Tag and push to artifactory
+
+```bash
+docker tag luckysheet-server:${TAG} \
+  art.sec.samsung.net/rs8-sr-nmt_docker/luckysheet-server:${TAG}
+docker push art.sec.samsung.net/rs8-sr-nmt_docker/luckysheet-server:${TAG}
+```
+
 ## Environment
 
 - `REDIS_HOST`
