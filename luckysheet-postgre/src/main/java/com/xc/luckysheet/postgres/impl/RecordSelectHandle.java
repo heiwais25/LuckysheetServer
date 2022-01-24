@@ -10,10 +10,7 @@ import org.postgresql.util.PGobject;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 查询
@@ -265,7 +262,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public List<JSONObject> getBlocksByGridKey(String listId, boolean flag) {
         try {
-            List<Object> _param = new ArrayList<>(2);
+            List<String> _param = new ArrayList<>(2);
             String sql = "select id,index from " + JfGridConfigModel.TABLENAME + " p where  p.list_id=? ";
             _param.add(listId);
             if (flag) {
@@ -274,7 +271,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             }
             sql = sql + " and p.is_delete=0 ";
 
-            List<Map<String, Object>> list = jdbcTemplate_postgresql.queryForList(sql, Arrays.asList(_param));
+            List<Map<String, Object>> list = jdbcTemplate_postgresql.queryForList(sql, _param.toArray());
             List<JSONObject> result = new ArrayList<JSONObject>();
             for (Map<String, Object> map : list) {
                 result.add(getDBObjectFromMap(map));
