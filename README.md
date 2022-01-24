@@ -6,6 +6,8 @@ Spring server to run as luckysheet server
 
 - Redis
 - PostgresQL
+  - Base schema is defined in trena main api server as a form of prisma
+  - It is recommended to use this server after applying the schema defined by prisma
 
 ## Deployment
 

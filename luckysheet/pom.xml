@@ -63,11 +63,6 @@
             <artifactId>luckysheet-db</artifactId>
             <version>${project.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.xc</groupId>-->
-<!--            <artifactId>luckysheet-mysql</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.xc</groupId>
             <artifactId>luckysheet-postgre</artifactId>
