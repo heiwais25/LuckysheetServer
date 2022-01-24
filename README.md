@@ -7,6 +7,21 @@ Spring server to run as luckysheet server
 - Redis
 - PostgresQL
 
+## Deployment
+
+1. Build Luckysheet
+
+```bash
+mvn clean compile
+mvn package
+```
+
+2. Build docker image
+
+```bash
+docker build -t luckysheet-server:${TAG} .
+```
+
 ## Environment
 
 - `REDIS_HOST`
