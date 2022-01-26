@@ -1186,12 +1186,8 @@ public class JfGridUpdateService {
             String i = bson.get("i").toString();
             String k = bson.get("k").toString();
 
-            JSONObject _v = null; // Values to be replaced
-            if (bson.get("v") != null) {
-                _v = bson.getJSONObject("v");
-            }
+            Object _v = bson.get("v");
             if (_v == null) {
-                //没有要修改的值
                 return "";
             }
 
@@ -1202,19 +1198,21 @@ public class JfGridUpdateService {
                 //return "gridKey="+gridKey+"的数据表格不存在";
             }
 
-
-            //判断_v中是否存在null，则删除该参数
+            // To determine whether there is null in _v, delete the parameter
             boolean flag = false;
             String keys = "";
-            if (_v.keySet().size() != 0) {
-                for (String key : _v.keySet()) {
-                    if (_v.get(key) == null) {
-                        keys = key;
-                        flag = true;
+            if (_v instanceof JSONObject) {
+                JSONObject jsonObject = (JSONObject) _v;
+                if (jsonObject.keySet().size() != 0) {
+                    for (String key : jsonObject.keySet()) {
+                        if (jsonObject.get(key) == null) {
+                            keys = key;
+                            flag = true;
+                        }
                     }
+                } else {
+                    flag = true;
                 }
-            } else {
-                flag = true;
             }
 
             //Query query = new Query();
@@ -1236,8 +1234,7 @@ public class JfGridUpdateService {
                         return "删除失败";
                     }
                 } else {
-                    JSONObject _k = JfGridFileUtil.getObjectByObject(_config, k);
-                    if (_k != null) {
+                    if (_config.containsKey(k)) {
                         //新值覆盖旧值
                         //_k.putAll(_v);
                         keyName = "config," + k;
@@ -1247,7 +1244,7 @@ public class JfGridUpdateService {
                     } else {
                         //插入一个
                         //update.set("config."+k,_v);
-                        _result = recordDataUpdataHandle.updateJsonbForSetRootNull(query, "config," + k, _v, null, "\"config\":{\"" + k + "\":\"\"}");
+                        _result = recordDataUpdataHandle.updateJsonbForSetRootNull(query, "config," + k, (JSONObject) _v, null, "\"config\":{\"" + k + "\":\"\"}");
                         //update.set("jfgridfile."+_sheetPosition+".config."+k,_v);
                     }
                     if (!_result) {
