@@ -1253,6 +1253,7 @@ public class JfGridUpdateService {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log.error(ex.getMessage());
         }
         return "";
