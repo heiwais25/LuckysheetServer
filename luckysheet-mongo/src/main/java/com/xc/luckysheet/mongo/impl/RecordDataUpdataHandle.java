@@ -1,21 +1,21 @@
 package com.xc.luckysheet.mongo.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.client.result.UpdateResult;
 import com.xc.luckysheet.JfGridConfigModel;
 import com.xc.luckysheet.db.IRecordDataUpdataHandle;
 import com.xc.luckysheet.entity.GridRecordDataModel;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.BulkOperations;
-import org.springframework.data.util.Pair;
-import org.springframework.stereotype.Repository;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -381,7 +381,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
      * @return
      */
     @Override
-    public boolean updateJsonbForInsertNull(JSONObject query, String word, JSONObject db, Integer position, String words) {
+    public boolean updateJsonbForInsertNull(JSONObject query, String word, JSON db, Integer position, String words) {
         Query q=new Query();
         q.addCriteria(tranToCriteria(query));
 
@@ -427,7 +427,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
      * @return
      */
     @Override
-    public boolean updateJsonbForSetRootNull(JSONObject query, String word, JSONObject db, Integer position, String words) {
+    public boolean updateJsonbForSetRootNull(JSONObject query, String word, JSON db, Integer position, String words) {
         Query q=new Query();
         q.addCriteria(tranToCriteria(query));
 

@@ -1,5 +1,6 @@
 package com.xc.luckysheet.postgres.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xc.luckysheet.JfGridConfigModel;
@@ -419,7 +420,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
      */
     @Transactional(value = "postgresTxManager", rollbackFor = Exception.class)
     @Override
-    public boolean updateJsonbForInsertNull(JSONObject query, String word, JSONObject db, Integer position, String words) {
+    public boolean updateJsonbForInsertNull(JSONObject query, String word, JSON db, Integer position, String words) {
         String condition = "";
         try {
             log.info("select:" + query.toString(SerializerFeature.WriteMapNullValue));
@@ -497,7 +498,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
      */
     @Transactional(value = "postgresTxManager", rollbackFor = Exception.class)
     @Override
-    public boolean updateJsonbForSetRootNull(JSONObject query, String word, JSONObject db, Integer position, String words) {
+    public boolean updateJsonbForSetRootNull(JSONObject query, String word, JSON db, Integer position, String words) {
         String condition = "";
         try {
             log.info("select:{}", query.toString(SerializerFeature.WriteMapNullValue));

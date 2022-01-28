@@ -1186,7 +1186,7 @@ public class JfGridUpdateService {
             String i = bson.get("i").toString();
             String k = bson.get("k").toString();
 
-            Object _v = bson.get("v");
+            JSON _v = (JSON) bson.get("v");
             if (_v == null) {
                 return "";
             }
@@ -1242,10 +1242,8 @@ public class JfGridUpdateService {
                         _result = recordDataUpdataHandle.updateCellDataListValue(query, keyName, null, _v);
                         //update.set("jfgridfile."+_sheetPosition+".config."+k,_k);
                     } else {
-                        //插入一个
-                        //update.set("config."+k,_v);
-                        _result = recordDataUpdataHandle.updateJsonbForSetRootNull(query, "config," + k, (JSONObject) _v, null, "\"config\":{\"" + k + "\":\"\"}");
-                        //update.set("jfgridfile."+_sheetPosition+".config."+k,_v);
+                        _config.put(k, "");
+                        _result = recordDataUpdataHandle.updateJsonbForSetRootNull(query, "config," + k, _v, null, "\"config\":" + _config);
                     }
                     if (!_result) {
                         return "更新失败";

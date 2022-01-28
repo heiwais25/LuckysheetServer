@@ -1,13 +1,14 @@
 package com.xc.luckysheet.db;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xc.luckysheet.entity.GridRecordDataModel;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * json数据更新处理
+ *
  * @author Administrator
  */
 public interface IRecordDataUpdataHandle {
@@ -15,6 +16,7 @@ public interface IRecordDataUpdataHandle {
     /**
      * sheet多块更新（先删除后添加）
      * 按IDS删除一组，然后新加处理后的
+     *
      * @param blocks
      * @param ids
      * @return
@@ -24,6 +26,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 批量更新
+     *
      * @param models
      * @return
      */
@@ -31,6 +34,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 清除指定层级下某条数据
+     *
      * @param query   键值对
      * @param keyName
      * @return
@@ -39,6 +43,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新jsonb中某条文本数据
+     *
      * @param query    键值对
      * @param keyName
      * @param position
@@ -49,6 +54,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新jsonb中某条文本数据
+     *
      * @param query    键值对
      * @param keyName
      * @param position
@@ -59,6 +65,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * jsonb数据中元素添加元素
+     *
      * @param query
      * @param word
      * @param db
@@ -69,6 +76,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新
+     *
      * @param query
      * @param word
      * @return
@@ -77,6 +85,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新
+     *
      * @param query
      * @param word
      * @return
@@ -85,6 +94,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新status状态
+     *
      * @param model
      * @return
      */
@@ -92,6 +102,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新sheet隐藏状态
+     *
      * @param model
      * @param hide
      * @param index1
@@ -102,6 +113,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新sheet隐藏状态
+     *
      * @param model
      * @param hide
      * @param index
@@ -111,6 +123,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * 更新jsonb中某条文本数据
+     *
      * @param block_ids
      * @param models
      * @return
@@ -119,6 +132,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * jsonb数据中元素添加元素（集合插入）
+     *
      * @param query
      * @param word
      * @param db
@@ -126,10 +140,11 @@ public interface IRecordDataUpdataHandle {
      * @param words
      * @return
      */
-    boolean updateJsonbForInsertNull(JSONObject query, String word, JSONObject db, Integer position, String words);
+    boolean updateJsonbForInsertNull(JSONObject query, String word, JSON db, Integer position, String words);
 
     /**
      * jsonb数据中元素添加元素
+     *
      * @param query
      * @param word
      * @param db
@@ -141,6 +156,7 @@ public interface IRecordDataUpdataHandle {
 
     /**
      * jsonb数据中元素添加元素(根节点)
+     *
      * @param query
      * @param word
      * @param db
@@ -148,7 +164,7 @@ public interface IRecordDataUpdataHandle {
      * @param words
      * @return
      */
-    boolean updateJsonbForSetRootNull(JSONObject query, String word, JSONObject db, Integer position, String words);
+    boolean updateJsonbForSetRootNull(JSONObject query, String word, JSON db, Integer position, String words);
 
 
 }
