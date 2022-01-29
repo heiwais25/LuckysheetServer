@@ -166,5 +166,12 @@ public interface IRecordDataUpdataHandle {
      */
     boolean updateJsonbForSetRootNull(JSONObject query, String word, JSON db, Integer position, String words);
 
-
+    /**
+     * Update sheet file info given by query
+     *
+     * @param sheetId id of file
+     * @param newName newName to update
+     * @return whether it succeed or not
+     */
+    boolean updateSheetFileInfo(String sheetId, String newName);
 }

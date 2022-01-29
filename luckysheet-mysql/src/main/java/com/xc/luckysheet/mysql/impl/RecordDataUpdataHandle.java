@@ -565,4 +565,9 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
 //            throw new RuntimeException(ex.getMessage());
 //        }
     }
+
+    @Override
+    public boolean updateSheetFileInfo(String sheetId, String newName) {
+        throw new RuntimeException("Should be implemented");
+    }
 }

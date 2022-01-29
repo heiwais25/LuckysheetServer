@@ -1577,15 +1577,15 @@ public class JfGridUpdateService {
     }
 
     /**
-     * 3.10.1	表格名称 修改 数据库
+     * Change table name edit database
      *
-     * @param gridKey
-     * @param bson
-     * @return
+     * @param gridKey key to specify sheet
+     * @param bson form json data including new sheet info
+     * @return string result
      */
     public String Operation_na(String gridKey, JSONObject bson) {
         try {
-            String v = null;// 	表格的名称
+            String v = null; // the name of the form
             if (bson.containsKey("v")) {
                 v = bson.get("v").toString().trim();
             }
@@ -1593,11 +1593,11 @@ public class JfGridUpdateService {
             model.setList_id(gridKey);
             model.setGrid_name(v);
 
-            //更新文件名
-            int i = 1;
-            if (i == 0) {
-                return "改名失败";
+            if (v == null || v.isEmpty()) {
+                throw new IllegalArgumentException("Name should not be empty");
             }
+
+            recordDataUpdataHandle.updateSheetFileInfo(gridKey, v);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

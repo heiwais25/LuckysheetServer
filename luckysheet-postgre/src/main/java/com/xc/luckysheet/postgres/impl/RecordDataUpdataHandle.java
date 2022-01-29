@@ -524,4 +524,18 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             throw new RuntimeException(ex.getMessage());
         }
     }
+
+    @Transactional(value = "postgresTxManager", rollbackFor = Exception.class)
+    @Override
+    public boolean updateSheetFileInfo(String sheetId, String newName) {
+        try {
+            String updateSql = "update " + JfGridConfigModel.SHEET_FILE_NAME + " set name = ? where id = ?";
+            log.info("updateSql:" + updateSql);
+            jdbcTemplate_postgresql.update(updateSql, newName, sheetId);
+            return true;
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
+        }
+    }
 }
