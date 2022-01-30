@@ -1182,7 +1182,7 @@ public class JfGridUpdateService {
      */
     private String Operation_cg(String gridKey, JSONObject bson) {
         try {
-            //当前sheet的index值
+            // The index value of the current sheet
             String i = bson.get("i").toString();
             String k = bson.get("k").toString();
 
@@ -1215,10 +1215,7 @@ public class JfGridUpdateService {
                 }
             }
 
-            //Query query = new Query();
-            //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
             JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
-
             JSONObject _config = JfGridFileUtil.getJSONObjectByIndex(_dbObject, "config");
             String keyName = "";
             boolean _result = false;
@@ -1235,12 +1232,10 @@ public class JfGridUpdateService {
                     }
                 } else {
                     if (_config.containsKey(k)) {
-                        //新值覆盖旧值
-                        //_k.putAll(_v);
+                        // New value overwrites old value
+                        // Update the specific data of an element in jsonb
                         keyName = "config," + k;
-                        //对jsonb某个元素具体数据具体更新
                         _result = recordDataUpdataHandle.updateCellDataListValue(query, keyName, null, _v);
-                        //update.set("jfgridfile."+_sheetPosition+".config."+k,_k);
                     } else {
                         _config.put(k, "");
                         _result = recordDataUpdataHandle.updateJsonbForSetRootNull(query, "config," + k, _v, null, "\"config\":" + _config);
