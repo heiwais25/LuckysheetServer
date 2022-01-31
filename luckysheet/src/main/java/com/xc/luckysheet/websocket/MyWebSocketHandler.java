@@ -267,13 +267,14 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         WSUserModel.webSocketMapRemove(USER_SOCKET_SESSION_MAP, wsUserModel);
 
         if (isError) {
-            log.info("窗口关闭(Error):{},当前在线人数为{}", wsUserModel.getId(), getOnlineCount());
+            log.info("Window Closes (Error): {}, Number of online count: {}", wsUserModel.getId(), getOnlineCount());
         } else {
-            subOnlineCount();              //在线数减1
-            log.info("窗口关闭:{},当前在线人数为:{}", wsUserModel.getId(), getOnlineCount());
+            // Online count minus 1
+            subOnlineCount();
+            log.info("窗口关闭:{},当前在线人数为: {}", wsUserModel.getId(), getOnlineCount());
             try {
                 Map map = new HashMap<>(2);
-                map.put("message", "用户退出");
+                map.put("message", "User logged out");
                 map.put("type", 999);
                 map.put("username", wsUserModel.getUserName());
                 map.put("id", "" + wsUserModel.getWs().getId());
@@ -282,7 +283,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 redisMessagePublish.publishMessage(new RedisMessageModel(ipAndPort, wsUserModel.getGridKey(), param));
                 sendMessageToUserByCurrent(wsUserModel, param);
             } catch (Exception ex) {
-                log.error("用户下线群发失败:{}", ex);
+                log.error("User offline group sending failed: {}", ex);
             }
         }
 
